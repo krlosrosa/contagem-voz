@@ -67,8 +67,8 @@ export default function SpeechToText() {
     setProcessingError(null);
 
     const SpeechRecognition =
-      window.SpeechRecognition || window.webkitSpeechRecognition;
-    const recognition = new SpeechRecognition();
+    (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+  const recognition = new SpeechRecognition();
 
     recognition.lang = "pt-BR";
     recognition.continuous = true;
@@ -87,13 +87,13 @@ export default function SpeechToText() {
       if (silenceTimerRef.current) clearTimeout(silenceTimerRef.current);
     };
 
-    recognition.onerror = (event) => {
+    recognition.onerror = (event: any) => {
       console.error("Erro no reconhecimento de voz:", event.error);
       setProcessingError(`Erro de Microfone: ${event.error}. Recarregue a página.`);
     };
 
     // --- PONTO DA MUDANÇA ---
-    recognition.onresult = (event) => {
+    recognition.onresult = (event: any) => {
       resetSilenceTimer(); // Reseta o timer de silêncio a cada fala
 
       // 1. Reconstrói a transcrição completa (como antes)
