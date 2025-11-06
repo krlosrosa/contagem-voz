@@ -25,20 +25,23 @@ O formato JSON desejado é:
 
 Regras:
 1. Analise o texto do usuário para identificar os cinco campos.
-2. NOVO: O "codigo_produto" é SEMPRE um código numérico. O formato de saída DEVE ser uma string de 9 dígitos numéricos (ex: "610116340").
-3. NOVO: Se o usuário falar um código numérico com menos de 9 dígitos (ex: '10025'), você DEVE preencher com zeros à esquerda para totalizar 9 dígitos (ex: '000010025').
-4. NOVO: Se o usuário falar um código misturado com letras (ex: 'Produto 998-B' ou 'AF1000'), ignore as letras, extraia APENAS os números e preencha com zeros à esquerda (ex: '998-B' -> '000000998', 'AF1000' -> '000001000').
-5. Se nenhum número for falado para o código, use null.
-6. "quantidade_caixas" pode ser 'caixas', 'cxs', etc.
-7. "quantidade_unidades" pode ser 'unidades', 'un', 'peças', 'soltas'.
-8. A data de fabricação DEVE ser formatada como YYYY-MM-DD. A data atual é ${currentDate}.
-9. O "endereco" DEVE ser formatado como "L NNN NNNN". Preencha com zeros à esquerda (ex: "A 1 10" -> "A 001 0010").
-10. Retorne APENAS o objeto JSON, sem nenhum texto extra, markdown ou explicação.
+2. O "codigo_produto" é SEMPRE um código numérico. O formato de saída DEVE ser uma string de 9 dígitos numéricos (ex: "610116340").
+3. **Identificar todos os códigos de produto possíveis** na fala.
+4. **Corrigir erros comuns de transcrição**, mantendo sempre **nove dígitos**.
+5. Se um código não tiver 9 dígitos, tente inferir o dígito faltante apenas se for evidente (ex: “61010350” → “610103502”).
+6. Se o usuário falar um código numérico com menos de 9 dígitos (ex: '10025'), você DEVE preencher com zeros à esquerda para totalizar 9 dígitos (ex: '000010025').
+7. Se o usuário falar um código misturado com letras (ex: 'Produto 998-B' ou 'AF1000'), ignore as letras, extraia APENAS os números e preencha com zeros à esquerda (ex: '998-B' -> '000000998', 'AF1000' -> '000001000').
+8. Se nenhum número for falado para o código, use null.
+9. "quantidade_caixas" pode ser 'caixas', 'cxs', etc.
+10. "quantidade_unidades" pode ser 'unidades', 'un', 'peças', 'soltas'.
+11. A data de fabricação DEVE ser formatada como YYYY-MM-DD. A data atual é ${currentDate}.
+12. O "endereco" DEVE ser formatado como "L NNN NNNN". Preencha com zeros à esquerda (ex: "A 1 10" -> "A 001 0010").
+13. Retorne APENAS o objeto JSON, sem nenhum texto extra, markdown ou explicação.
 
 Exemplos (Data atual: ${currentDate}):
 
 Texto: "Anotado. 10 caixas e 5 unidades soltas do código 10025. Fabricação de 30 de outubro. Endereço A 1 5."
-JSON: { "codigo_produto": "000010025", "quantidade_caixas": 10, "quantidade_unidades": 5, "data_fabricacao": "2025-10-30", "endereco": "A 001 0005" }
+JSON: { "codigo_produto": "000010025", "quantidade_caixas": 10, "quanjtidade_unidades": 5, "data_fabricacao": "2025-10-30", "endereco": "A 001 0005" }
 
 Texto: "Ok, 50 caixas do produto 998-B. Fabricado hoje."
 JSON: { "codigo_produto": "000000998", "quantidade_caixas": 50, "quantidade_unidades": null, "data_fabricacao": "${currentDate}", "endereco": null }
