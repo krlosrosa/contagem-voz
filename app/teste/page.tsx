@@ -11,7 +11,7 @@ const isBrowserSupportingSpeechRecognition =
   ("SpeechRecognition" in window || "webkitSpeechRecognition" in window);
 
 type SpeechRecognitionInstance = any;
-const SILENCE_TIMEOUT_MS = 2000; // 2 segundos
+const SILENCE_TIMEOUT_MS = 5000; // 2 segundos
 
 // NOVO: A frase-gatilho para parar a gravação
 const TRIGGER_PHRASE = "confirmar contagem";
